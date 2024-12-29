@@ -44,7 +44,7 @@ jobs:
             name: Mocha-Test-Result
             path: test-results-2.xml
     docker:
-      needs: [unit-testing, code-coverage]
+      needs: [unit-testing]
       runs-on: ubuntu-latest
       steps:
       - name: checkout repository
