@@ -10,8 +10,11 @@ on:
     
 jobs:
     unit-testing:
-        name: Unit Testing
-        runs-on: ubuntu-latest
+        strategy:
+          matrix:
+            os: [ubuntu-latest, macos-14]
+            version: [10, 12, 14]
+        runs-on: ${{ matrix.os }}
         steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
@@ -20,7 +23,11 @@ jobs:
           uses: actions/setup-node@v4
           with:
             node-version: 20
-    
+        - name: Cache NPM dependencies
+          uses: actions/cache@v4
+          with:
+            path: ~/.npm
+            key: '${{ runner.os }}-node-modules-${{ hashFiles(''package-lock.json'') }}'    
         - name: Install Dependencies
           run: npm install
     
