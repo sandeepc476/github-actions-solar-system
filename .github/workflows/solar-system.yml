@@ -30,13 +30,22 @@ jobs:
           uses: actions/setup-node@v4
           with:
             node-version: ${{ matrix.nodejs_version }}
+        
+        - name: Cache NPM dependencies
+          uses: actions/cache@v4 
+          with: 
+            path: node_modules
+            key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}  
     
         - name: Install Dependencies
           run: npm install
     
         - name: Unit Testing
+          id: nodejs-unit-testing-step
           run: npm test
+
         # - name: Archive test result
+        #   if: always()
         #   uses: actions/upload-artifact@v4
         #   with:
         #     name: Mocha-Test-Result
