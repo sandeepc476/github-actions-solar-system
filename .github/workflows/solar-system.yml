@@ -6,18 +6,12 @@ on:
     branches:
       - main
       - 'feature/*'
-env:
-  MONGO_URI: 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
-  MONGO_USERNAME: superuser
-  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }} 
+
     
-jobs:
-    unit-testing:
-        strategy:
-          matrix:
-            os: [ubuntu-latest, macos-14]
-            version: [10, 12, 14]
-        runs-on: ${{ matrix.os }}
+jobs: 
+    unit-testing: # added 1st unit test
+        name: Unit Testing
+        runs-on: ubuntu-latest
         steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
@@ -26,41 +20,12 @@ jobs:
           uses: actions/setup-node@v4
           with:
             node-version: 20
-        - name: Cache NPM dependencies
-          uses: actions/cache@v4
-          with:
-            path: ~/.npm
-            key: '${{ runner.os }}-node-modules-${{ hashFiles(''package-lock.json'') }}'    
+    
         - name: Install Dependencies
           run: npm install
     
         - name: Unit Testing
           run: npm test
-          
-        - name: Archive Test Result
-          if: always()
-          uses: actions/upload-artifact@v4
-          with:
-            name: Mocha-Test-Result
-            path: test-results-2.xml
-    docker:
-      needs: [unit-testing]
-      runs-on: ubuntu-latest
-      steps:
-      - name: checkout repository
-        uses: actions/checkout@v4
-      - name: Set lowercase repository owner
-        run: echo "REPO_OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
-      - name: Docker login
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Docker build/push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/${{ env.REPO_OWNER_LC }}/solar-system:${{ github.sha }}
+            
+        
+
