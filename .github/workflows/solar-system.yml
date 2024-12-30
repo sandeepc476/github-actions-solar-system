@@ -90,6 +90,13 @@ jobs:
             username: ${{vars.DOCKERHUB_USERNAME}}
             password: ${{secrets.DOCKERHUB_PASSWORD}}
 
+        - name: Container Registry Login
+          uses: docker/login-action@v3
+          with:
+            registry: ghcr.io
+            username: ${{github.repository_owner}}
+            password: ${{ secrets.GITHUB_TOKEN }} 
+
         - name: Docker build for testing
           uses: docker/build-push-action@v6
           with:
@@ -109,9 +116,11 @@ jobs:
             echo Testing image URL using wget
             wget -q -O - 127.0.0.1:3000/live | grep live
         
-        - name: Docker push
+        - name: Container registry push
           uses: docker/build-push-action@v6
           with:
             context: .  
             push: true
-            tags: ${{vars.DOCKERHUB_USERNAME}}/solar-system:${{ github.sha }}    
+            tags: |
+              ${{vars.DOCKERHUB_USERNAME}}/solar-system:${{ github.sha }}
+              ghcr.io/${{gihub.repository_owner}}/solar-system: ${{ github.sha }}
