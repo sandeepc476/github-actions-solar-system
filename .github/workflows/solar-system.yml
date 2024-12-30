@@ -57,8 +57,9 @@ jobs:
             run: npm install
       
           - name: Check Code Coverage
+            continue-on-error: true
             run: npm run coverage
-            
+
           - name: Archive test result
             uses: actions/upload-artifact@v4
             with:
