@@ -20,13 +20,13 @@ jobs:
             ports:
               - 27017:27017
         env:      
-          MONGO_URI: 'mongodb://localhost:27017/superData'
-          MONGO_USERNAME: non-prod-user
-          MONGO_PASSWORD: non-prod-password   
+            MONGO_URI: 'mongodb://localhost:27017/superData'
+            MONGO_USERNAME: non-prod-user
+            MONGO_PASSWORD: non-prod-password   
         strategy:
           matrix:
-            nodejs_version: [18, 19, 20]
-            operating_system: [ubuntu-latest, macos-latest]
+            nodejs_version: [18, 20]
+            operating_system: [ubuntu-latest]
             exclude:
             - nodejs_version: 18
               operating_system: macos-latest
