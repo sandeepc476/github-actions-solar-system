@@ -159,7 +159,7 @@ jobs:
             version: 'v1.29.2' # default is latest stable
         
         - name: Set Kubeconfig
-        - uses: azure/k8s-set-context@v4
+          uses: azure/k8s-set-context@v4
           with:
             method: kubeconfig
             kubeconfig: ${{secrets.KUBECONFIG}} 
