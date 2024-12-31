@@ -168,11 +168,11 @@ jobs:
         - name: Verify Kubernetes Connection
           run: kubectl cluster-info
         
-        # - name: Set Kubeconfig
-        #   uses: azure/k8s-set-context@v4
-        #   with:
-        #     method: kubeconfig
-        #     kubeconfig: ${{secrets.KUBECONFIG}} 
+        - name: Set Kubeconfig
+          uses: azure/k8s-set-context@v4
+          with:
+            method: kubeconfig
+            kubeconfig: ${{secrets.KUBECONFIG}} 
         
         - name: Fetch kubernetes cluster details
           run: |
