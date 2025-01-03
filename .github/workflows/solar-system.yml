@@ -149,6 +149,8 @@ jobs:
     Dev-deploy: 
       needs: docker
       runs-on: ubuntu-latest
+      environment:
+        name: development
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
@@ -176,7 +178,7 @@ jobs:
         
         - name: Fetch kubernetes cluster details
           run: |
-            kubectl version
+            kubectl version --short -o  yaml
             echo -------------------------------------
             kubectl get nodes
                    
