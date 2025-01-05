@@ -6,7 +6,8 @@ on:
     branches:
       - main
       - 'feature/*'
-
+ 
+      
 env:
   MONGO_URI: 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
   MONGO_USERNAME: ${{ vars.MONGO_USERNAME }}
@@ -149,8 +150,6 @@ jobs:
     Dev-deploy: 
       needs: docker
       runs-on: ubuntu-latest
-      environment:
-        name: development
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
@@ -160,16 +159,6 @@ jobs:
           with:
             version: 'v1.29.2' # default is latest stable
         
-        - name: Set Up kubeconfig
-          env:
-            KUBECONFIG: ${{ secrets.KUBECONFIG }}
-          run: |
-            echo "$KUBECONFIG" > kubeconfig.yaml
-            export KUBECONFIG=$PWD/kubeconfig.yaml
-
-        - name: Verify Kubernetes Connection
-          run: kubectl cluster-info
-        
         - name: Set Kubeconfig
           uses: azure/k8s-set-context@v4
           with:
@@ -178,7 +167,7 @@ jobs:
         
         - name: Fetch kubernetes cluster details
           run: |
-            kubectl version --short -o  yaml
+            kubectl version
             echo -------------------------------------
             kubectl get nodes
                    
